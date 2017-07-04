@@ -1,0 +1,49 @@
+@prefix: <http://www.cs.bath.ac.uk/dm4t/dataset/enliten/> .
+@prefix csv:<http://www.ntnu.no/ub/data/csv#> .
+@prefix dm4t:<http://www.cs.bath.ac.uk/dm4t#> .
+@prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms:<http://purl.org/dc/terms/> .
+@prefix xsd:<http://www.w3.org/2001/XMLSchema#> .
+@prefix seas:<https://w3id.org/seas#> .
+@prefix ssn:<http://purl.oclc.org/NET/ssnx/ssn#> .
+
+
+<http://polka.io/datasets/enliten-tsv/power.tsv> a csv:CsvDocument ;
+  rdfs:label "enliten" ;
+  rdfs:comment "Power readings for the enliten dataset" ;
+  csv:hasColumn :column0 ;
+  csv:hasColumn :column1 ;
+  csv:hasColumn :column2 ;
+  csv:hasColumn :column3 ;
+  csv:hasColumn :column4 ;
+  csv:hasColumn :column5 ;
+  csv:hasColumn :column6 .
+
+:column0 a csv:Column ;
+  csv:hasIndex "0" .
+
+:column1 a csv:Column ;
+  csv:mapsTo dm4t:device ;
+  csv:hasIndex "1" .
+
+:column2 a csv:Column ;
+  csv:mapsTo dm4t:sensor ;
+  csv:hasIndex "2" .
+
+:column3 a csv:Column ;
+  csv:mapsTo ssn:hasValue ;
+  csv:mapsTo dm4t:powerReading ;
+  csv:hasIndex "3" .
+
+:column4 a csv:Column ;
+  csv:mapsTo xsd:dateTimeStamp ;
+  csv:hasIndex "4" .
+
+:column5 a csv:Column ;
+  csv:mapsTo dm4t:minValue ;
+  csv:hasIndex "5" .
+
+:column6 a csv:Column ;
+  csv:mapsTo dm4t:maxValue ;
+  csv:hasIndex "6" .
+
