@@ -1,1 +1,1 @@
-nohup ./fuseki-server --port 3030 --update --loc=/home/mrt32/ds /ds &
+nohup ./fuseki-server --port 3030 --update --loc=./ds /ds &

@@ -1,5 +1,6 @@
 (ns triplestore.handler
   (:require [compojure.core :refer :all]
+            [triplestore.db :refer :all]
             [clojure.java.shell :refer [sh]]
             [compojure.route :as route]
             [clojure.java.io :as io]
@@ -9,13 +10,18 @@
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]))
 
-(def root "/home/mrt32/repos/triplestore/public")
+(def root "fuseki/repos/triplestore/public")
+(def HOST "http://localhost:3030")
+
+;; (defn put-triples-graph [triplefile]
+;;   (sh "ruby" "s-put" "http://localhost:3030/ds/data" "default" triplefile :dir "fuseki/bin"))
 
 (defn put-triples-graph [triplefile]
-  (sh "/home/mrt32/bin/s-put" "http://localhost:3030/ds/data" "default" triplefile))
+  (POST (str HOST "/ds/upload" triplefile)))
+
 
 (defn query-graph [sparql]
-  (sh "/home/mrt32/bin/s-query" "--service" "http://localhost:3030/ds/query" sparql))
+  (sh "ruby" "s-query" "--service" "http://localhost:3030/ds/query" sparql :dir "fuseki/bin"))
 
 (defn add-triples [data]
   (do
@@ -26,9 +32,9 @@
   (file-response fname {:root (str root "/datasets")}))
 
 (defroutes app-routes
-  (GET "/" [] "Hello World")
+  (GET "/" [] (file-response "index.html" {:root "resources/public"}))
+  (route/resources "/")
   (GET "/add/" [] "Hello Add")
-  ;; (route/resources "/")
   ;; (GET "/dataset/" [] "http://localhost:1339/dataset/")
   (POST "/add/" [& data] (add-triples (:file data)))
   (POST "/query/" [& data] (response (query-graph (:sparql data))))
@@ -68,6 +74,8 @@
 ;;       ))
 
 (def app
+  ;; (create-db "database")
+  ;; (start-server)
   (-> app-routes
       all-cors
       ;; #(wrap-defaults % site-defaults)
